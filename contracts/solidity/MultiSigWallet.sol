@@ -151,10 +151,11 @@ contract MultiSigWallet {
         Revocation(msg.sender, transactionId);
     }
 
-    /// @dev Allows anyone to execute a confirmed transaction.
+    /// @dev Allows an owner to execute a confirmed transaction.
     /// @param transactionId Transaction ID.
     function executeTransaction(uint transactionId)
         public
+        ownerExists(msg.sender)
         notExecuted(transactionId)
     {
         if (isConfirmed(transactionId)) {
