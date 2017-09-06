@@ -5,7 +5,7 @@
         "params": [
             ["0x64F094EBA4cC2868A0667fCCF757e8895d02E4A8", "0x40Af5C322B3305590C9a75afC4e11F6ba4670B71", "0x748Ed07947B280b8B2289e16c62cE14caA562985"],
             2,
-            600
+            1200
         ]
     },
     {
@@ -39,6 +39,6 @@
         "type": "assertion",
         "contract": "MultiSigWallet",
         "name": "recoveryModeTriggerTime",
-        "return": 600
+        "return": 1200
     }
 ]

@@ -12,7 +12,6 @@ contract MultiSigWallet {
     event Submission(uint indexed transactionId);
     event Execution(uint indexed transactionId);
     event ExecutionFailure(uint indexed transactionId);
-    event Deposit(address indexed sender, uint value);
     event RecoveryModeActivated();
 
     mapping (uint => Transaction) public transactions;
@@ -77,8 +76,6 @@ contract MultiSigWallet {
     function()
         payable
     {
-        if (msg.value > 0)
-            Deposit(msg.sender, msg.value);
     }
 
     /*
@@ -107,10 +104,9 @@ contract MultiSigWallet {
         public
         ownerExists(msg.sender)
     {
-        if (block.timestamp - lastTransactionTime >= recoveryModeTriggerTime) {
-            required = 1;
-            RecoveryModeActivated();
-        }
+        require(block.timestamp - lastTransactionTime >= recoveryModeTriggerTime)
+        required = 1;
+        RecoveryModeActivated();
     }
 
     /// @dev Allows an owner to submit and confirm a transaction.
