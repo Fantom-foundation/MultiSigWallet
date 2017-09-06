@@ -3,8 +3,9 @@
         "type": "deployment",
         "file": "MultiSigWallet.sol",
         "params": [
-            ["REPLACE_WITH_ADDRESS", "REPLACE_WITH_ADDRESS"],
-            2
+            ["0x64F094EBA4cC2868A0667fCCF757e8895d02E4A8", "0x40Af5C322B3305590C9a75afC4e11F6ba4670B71", "0x748Ed07947B280b8B2289e16c62cE14caA562985"],
+            2,
+            600
         ]
     },
     {
@@ -12,19 +13,32 @@
         "contract": "MultiSigWallet",
         "name": "owners",
         "params": [0],
-        "return": "REPLACE_WITH_ADDRESS"
+        "return": "0x64F094EBA4cC2868A0667fCCF757e8895d02E4A8"
     },
     {
         "type": "assertion",
         "contract": "MultiSigWallet",
         "name": "owners",
         "params": [1],
-        "return": "REPLACE_WITH_ADDRESS"
+        "return": "0x40Af5C322B3305590C9a75afC4e11F6ba4670B71"
+    },
+    {
+        "type": "assertion",
+        "contract": "MultiSigWallet",
+        "name": "owners",
+        "params": [2],
+        "return": "0x748Ed07947B280b8B2289e16c62cE14caA562985"
     },
     {
         "type": "assertion",
         "contract": "MultiSigWallet",
         "name": "required",
         "return": 2
+    },
+    {
+        "type": "assertion",
+        "contract": "MultiSigWallet",
+        "name": "recoveryModeTriggerTime",
+        "return": 600
     }
 ]
