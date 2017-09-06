@@ -13,7 +13,7 @@ contract MultiSigWallet {
     event Execution(uint indexed transactionId);
     event ExecutionFailure(uint indexed transactionId);
     event Deposit(address indexed sender, uint value);
-    event RequirementChange(uint required);
+    event RecoveryModeActivated();
 
     mapping (uint => Transaction) public transactions;
     mapping (uint => mapping (address => bool)) public confirmations;
@@ -22,6 +22,7 @@ contract MultiSigWallet {
     uint public required;
     uint public transactionCount;
     uint public lastTransactionTime;
+    uint public recoveryModeTriggerTime;
 
     struct Transaction {
         address destination;
@@ -72,15 +73,6 @@ contract MultiSigWallet {
         _;
     }
 
-    modifier validRequirement(uint ownerCount, uint _required) {
-        if (   ownerCount > MAX_OWNER_COUNT
-            || _required > ownerCount
-            || _required == 0
-            || ownerCount == 0)
-            revert();
-        _;
-    }
-
     /// @dev Fallback function allows to deposit ether.
     function()
         payable
@@ -92,12 +84,12 @@ contract MultiSigWallet {
     /*
      * Public functions
      */
-    /// @dev Contract constructor sets initial owners and required number of confirmations.
-    /// @param _owners List of initial owners.
+    /// @dev Contract constructor sets owners, required number of confirmations, and recovery mode trigger.
+    /// @param _owners List of owners.
     /// @param _required Number of required confirmations.
-    function MultiSigWallet(address[] _owners, uint _required)
+    /// @param _recoveryModeTriggerTime Time (in seconds) of inactivity before recovery mode is triggerable.
+    function MultiSigWallet(address[] _owners, uint _required, uint _recoveryModeTriggerTime)
         public
-        validRequirement(_owners.length, _required)
     {
         for (uint i=0; i<_owners.length; i++) {
             if (isOwner[_owners[i]] || _owners[i] == 0)
@@ -107,17 +99,18 @@ contract MultiSigWallet {
         owners = _owners;
         required = _required;
         lastTransactionTime = block.timestamp;
+        recoveryModeTriggerTime = _recoveryModeTriggerTime;
     }
 
-    /// @dev Allows to change the number of required confirmations. Transaction has to be sent by wallet.
-    /// @param _required Number of required confirmations.
-    function changeRequirement(uint _required)
+    /// @dev Changes the number of required confirmations to one. Only triggerable after recoveryModeTriggerTime of inactivity.
+    function enterRecoveryMode()
         public
-        onlyWallet
-        validRequirement(owners.length, _required)
+        ownerExists(msg.sender)
     {
-        required = _required;
-        RequirementChange(_required);
+        if (block.timestamp - lastTransactionTime >= recoveryModeTriggerTime) {
+            required = 1;
+            RecoveryModeActivated();
+        }
     }
 
     /// @dev Allows an owner to submit and confirm a transaction.
