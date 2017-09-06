@@ -5,7 +5,6 @@ $ethereumcpp = <<SCRIPT
 if ! which eth | grep -q /usr/bin/eth || ! which solc | grep -q /usr/bin/solc; then
     DEBIAN_FRONTEND=noninteractive sudo apt-get install -y software-properties-common
     DEBIAN_FRONTEND=noninteractive sudo add-apt-repository -y ppa:ethereum/ethereum
-    DEBIAN_FRONTEND=noninteractive sudo add-apt-repository -y ppa:ethereum/ethereum-dev
     DEBIAN_FRONTEND=noninteractive sudo apt-get update
 fi
 
