@@ -2,7 +2,7 @@ pragma solidity 0.4.16;
 
 
 /// @title Multisignature wallet - Allows multiple parties to agree on transactions before execution.
-/// @author Stefan George - <stefan.george@consensys.net>
+/// @author Stefan George, Danny Wu
 contract MultiSigWallet {
 
     uint constant public MAX_OWNER_COUNT = 50;
@@ -13,8 +13,6 @@ contract MultiSigWallet {
     event Execution(uint indexed transactionId);
     event ExecutionFailure(uint indexed transactionId);
     event Deposit(address indexed sender, uint value);
-    event OwnerAddition(address indexed owner);
-    event OwnerRemoval(address indexed owner);
     event RequirementChange(uint required);
 
     mapping (uint => Transaction) public transactions;
@@ -23,6 +21,7 @@ contract MultiSigWallet {
     address[] public owners;
     uint public required;
     uint public transactionCount;
+    uint public lastTransactionTime;
 
     struct Transaction {
         address destination;
@@ -33,12 +32,6 @@ contract MultiSigWallet {
 
     modifier onlyWallet() {
         if (msg.sender != address(this))
-            revert();
-        _;
-    }
-
-    modifier ownerDoesNotExist(address owner) {
-        if (isOwner[owner])
             revert();
         _;
     }
@@ -113,6 +106,7 @@ contract MultiSigWallet {
         }
         owners = _owners;
         required = _required;
+        lastTransactionTime = block.timestamp;
     }
 
     /// @dev Allows to change the number of required confirmations. Transaction has to be sent by wallet.
@@ -173,6 +167,7 @@ contract MultiSigWallet {
         if (isConfirmed(transactionId)) {
             Transaction storage txn = transactions[transactionId];
             txn.executed = true;
+            lastTransactionTime = block.timestamp;
             if (txn.destination.call.value(txn.value)(txn.data))
                 Execution(transactionId);
             else {
