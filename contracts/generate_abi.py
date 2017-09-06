@@ -4,9 +4,7 @@ import json
 import os
 
 pp = PreProcessor()
-contracts = ['MultiSigWallet.sol',
-             'MultiSigWalletWithDailyLimit.sol',             
-             'MultiSigWalletWithDailyLimitFactory.sol']
+contracts = ['MultiSigWallet.sol']
 contract_dir = 'solidity/'
 abi_dir = 'abi'
 
