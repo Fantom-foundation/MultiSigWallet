@@ -24,7 +24,7 @@ Deploy
 
 1. Change `contracts/deploy/MultiSig.json` with the addresses of the owners, the quroum reqired for transactions to be executed, and the inactivity time in seconds. 86400 seconds = 1 day.
 
-2. Sign up for an API key with http://infura.io/
+2. If you don't have a local ethereum node running, sign up for an API key with http://infura.io/
 
 3. Deposit at least 0.1 ETH into a new Ethereum address, which will be used to create the contract. This address doesn't have to be an owner.
 
@@ -32,8 +32,6 @@ Deploy
 
 ```
 cd /vagrant/contracts/
-python deploy.py -f deploy/MultiSig.json
-
 python deploy.py -f deploy/MultiSig.json -protocol https -host mainnet.infura.io/<YOUR_INFURA_API_KEY> -port 80 -private_key <PRIVATE_KEY_OF_CONTRACT_CREATOR>
 ```
 
