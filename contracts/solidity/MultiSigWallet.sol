@@ -102,7 +102,7 @@ contract MultiSigWallet {
         public
         ownerExists(msg.sender)
     {
-        require(block.timestamp - lastTransactionTime >= recoveryModeTriggerTime)
+        require(block.timestamp - lastTransactionTime >= recoveryModeTriggerTime);
         required = 1;
         RecoveryModeActivated();
     }
