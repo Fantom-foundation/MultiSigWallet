@@ -3,7 +3,7 @@ Ethereum Multisignature Wallet
 
 Allows multiple parties to agree on transactions before execution. Features a disaster recovery mode, where after a predefined period of inactivity any party will be able to spend from the wallet.
 
-Based off (gnosis/MultiSigWallet)[https://github.com/gnosis/MultiSigWallet]. This smart contract features the following key differences:
+Based off [gnosis/MultiSigWallet](https://github.com/gnosis/MultiSigWallet). This smart contract features the following key differences:
 
 * Changing of owners is not allowed, in order to minimise the attack surface.
 * Time-activated disaster recovery mode / dead man's switch
