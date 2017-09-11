@@ -1,7 +1,7 @@
 [
     {
         "type": "deployment",
-        "file": "MultiSigWalletWithDailyLimitFactory.sol"
+        "file": "MultiSigWallet.sol"
     },
     {
         "type": "deployment",
