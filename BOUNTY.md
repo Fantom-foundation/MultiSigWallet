@@ -1,12 +1,14 @@
 # Public Bug Bounty
 
-This Ethereum multisig wallet smart contract is offering a public bug bounty, with a value of approximately $10,000 USD as of creation.
+**UPDATED 27/09/17**: The bug bounty has been increased to approximately $50,000 USD (from $10,000 USD) for the next 2 weeks.
+
+This Ethereum multisig wallet smart contract is offering a public bug bounty, with a value of approximately $50,000 USD.
 
 For more details about the smart contract, see README.md
 
 ## Details
 
-Until 25th September 2017, 35.59864 ETH will be stored in [0x0679b3b89a1a6ed7a0247e232a762f966008be80](https://etherscan.io/address/0x0679b3b89a1a6ed7a0247e232a762f966008be80), which is a deployment of this smart contract.
+Until 11th of October 2017, 170.54642125 ETH will be stored in [0x0679b3b89a1a6ed7a0247e232a762f966008be80](https://etherscan.io/address/0x0679b3b89a1a6ed7a0247e232a762f966008be80), which is a deployment of this smart contract.
 
 It is a 2 of 3 multisig wallet, with a recovery trigger time of 60 days.
 
