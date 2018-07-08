@@ -1,9 +1,39 @@
-pragma solidity 0.4.16;
+pragma solidity 0.4.23;
 
 
 /// @title Multisignature wallet - Allows multiple parties to agree on transactions before execution.
-/// @author Stefan George, Danny Wu
+/// @author Stefan George, Danny Wu, Michael Kong
+
+
+// ----------------------------------------------------------------------------
+//
+// SafeMath
+//
+// ----------------------------------------------------------------------------
+
+library SafeMath {
+
+    function add(uint a, uint b) internal pure returns (uint c) {
+        c = a + b;
+        require(c >= a);
+    }
+
+    function sub(uint a, uint b) internal pure returns (uint c) {
+        require(b <= a);
+        c = a - b;
+    }
+
+    function mul(uint a, uint b) internal pure returns (uint c) {
+        c = a * b;
+        require(a == 0 || c / a == b);
+    }
+
+}
+
+
 contract MultiSigWallet {
+
+    using SafeMath for uint;
 
     event Confirmation(address indexed sender, uint indexed transactionId);
     event Revocation(address indexed sender, uint indexed transactionId);
@@ -102,7 +132,7 @@ contract MultiSigWallet {
         public
         ownerExists(msg.sender)
     {
-        require(block.timestamp - lastTransactionTime >= recoveryModeTriggerTime);
+        require(block.timestamp.sub(lastTransactionTime) >= recoveryModeTriggerTime);
         required = 1;
         RecoveryModeActivated();
     }
@@ -289,8 +319,8 @@ contract MultiSigWallet {
                 transactionIdsTemp[count] = i;
                 count += 1;
             }
-        _transactionIds = new uint[](to - from);
+        _transactionIds = new uint[](to.sub(from));
         for (i=from; i<to; i++)
-            _transactionIds[i - from] = transactionIdsTemp[i];
+            _transactionIds[i.sub(from)] = transactionIdsTemp[i];
     }
 }
