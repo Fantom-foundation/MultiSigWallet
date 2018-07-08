@@ -123,6 +123,7 @@ contract MultiSigWallet {
     /// @return Returns transaction ID.
     function submitTransaction(address destination, uint value, bytes data)
         public
+        ownerExists(msg.sender)
         returns (uint transactionId)
     {
         require(destination != 0x0);
