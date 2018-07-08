@@ -139,6 +139,7 @@ contract MultiSigWallet {
         public
         returns (uint transactionId)
     {
+        require(destination != 0x0);
         transactionId = addTransaction(destination, value, data);
         confirmTransaction(transactionId);
     }
