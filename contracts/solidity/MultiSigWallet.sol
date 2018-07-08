@@ -59,44 +59,37 @@ contract MultiSigWallet {
     }
 
     modifier onlyWallet() {
-        if (msg.sender != address(this))
-            revert();
+        require(msg.sender == address(this));
         _;
     }
 
     modifier ownerExists(address owner) {
-        if (!isOwner[owner])
-            revert();
+        require(isOwner[owner]);
         _;
     }
 
     modifier transactionExists(uint transactionId) {
-        if (transactions[transactionId].destination == 0)
-            revert();
+        require(transactions[transactionId].destination != 0);
         _;
     }
 
     modifier confirmed(uint transactionId, address owner) {
-        if (!confirmations[transactionId][owner])
-            revert();
+        require(confirmations[transactionId][owner]);
         _;
     }
 
     modifier notConfirmed(uint transactionId, address owner) {
-        if (confirmations[transactionId][owner])
-            revert();
+        require(!confirmations[transactionId][owner]);
         _;
     }
 
     modifier notExecuted(uint transactionId) {
-        if (transactions[transactionId].executed)
-            revert();
+        require(!transactions[transactionId].executed);
         _;
     }
 
     modifier notNull(address _address) {
-        if (_address == 0)
-            revert();
+        require(_address != 0);
         _;
     }
 
