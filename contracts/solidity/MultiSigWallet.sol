@@ -48,11 +48,6 @@ contract MultiSigWallet {
         bool executed;
     }
 
-    /*modifier onlyWallet() {
-        require(msg.sender == address(this));
-        _;
-    }*/
-
     modifier ownerExists(address owner) {
         require(isOwner[owner]);
         _;
