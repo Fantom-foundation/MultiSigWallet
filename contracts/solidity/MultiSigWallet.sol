@@ -109,9 +109,10 @@ contract MultiSigWallet {
     function MultiSigWallet(address[] _owners, uint _required, uint _recoveryModeTriggerTime)
         public
     {
+        // ensure at least one owner, one signature and recovery mode time is greater than zero.
+        require(_required > 0 && _owners.length > 0 && _recoveryModeTriggerTime > 0);
         for (uint i=0; i<_owners.length; i++) {
-            if (isOwner[_owners[i]] || _owners[i] == 0)
-                revert();
+            require(!isOwner[_owners[i]] && _owners[i] != 0);
             isOwner[_owners[i]] = true;
         }
         owners = _owners;
