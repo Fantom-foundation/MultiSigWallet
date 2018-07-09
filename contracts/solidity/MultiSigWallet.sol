@@ -96,7 +96,7 @@ contract MultiSigWallet {
         public
     {
         // ensure at least one owner, one signature and recovery mode time is greater than zero.
-        require(_required > 0 && _owners.length > 0 && _recoveryModeTriggerTime > 0);
+        require(_required > 0 && _owners.length > 0 && _recoveryModeTriggerTime > 0 && _required == _owners.length);
         for (uint i=0; i<_owners.length; i++) {
             require(!isOwner[_owners[i]] && _owners[i] != 0);
             isOwner[_owners[i]] = true;
