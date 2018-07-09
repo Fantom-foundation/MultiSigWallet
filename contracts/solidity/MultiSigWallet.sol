@@ -80,6 +80,7 @@ contract MultiSigWallet {
 
     /// @dev Fallback function allows to deposit ether.
     function()
+        public
         payable
     {
     }
@@ -91,7 +92,7 @@ contract MultiSigWallet {
     /// @param _owners List of owners.
     /// @param _required Number of required confirmations.
     /// @param _recoveryModeTriggerTime Time (in seconds) of inactivity before recovery mode is triggerable.
-    function MultiSigWallet(address[] _owners, uint _required, uint _recoveryModeTriggerTime)
+    constructor (address[] _owners, uint _required, uint _recoveryModeTriggerTime)
         public
     {
         // ensure at least one owner, one signature and recovery mode time is greater than zero.
@@ -113,7 +114,7 @@ contract MultiSigWallet {
     {
         require(block.timestamp.sub(lastTransactionTime) >= recoveryModeTriggerTime);
         required = 1;
-        RecoveryModeActivated();
+        emit RecoveryModeActivated();
     }
 
     /// @dev Allows an owner to submit and confirm a transaction.
@@ -140,7 +141,7 @@ contract MultiSigWallet {
         notConfirmed(transactionId, msg.sender)
     {
         confirmations[transactionId][msg.sender] = true;
-        Confirmation(msg.sender, transactionId);
+        emit Confirmation(msg.sender, transactionId);
         executeTransaction(transactionId);
     }
 
@@ -153,7 +154,7 @@ contract MultiSigWallet {
         notExecuted(transactionId)
     {
         confirmations[transactionId][msg.sender] = false;
-        Revocation(msg.sender, transactionId);
+        emit Revocation(msg.sender, transactionId);
     }
 
     /// @dev Allows an owner to execute a confirmed transaction.
@@ -168,9 +169,9 @@ contract MultiSigWallet {
             txn.executed = true;
             lastTransactionTime = block.timestamp;
             if (txn.destination.call.value(txn.value)(txn.data))
-                Execution(transactionId);
+                emit Execution(transactionId);
             else {
-                ExecutionFailure(transactionId);
+                emit ExecutionFailure(transactionId);
                 txn.executed = false;
             }
         }
@@ -214,7 +215,7 @@ contract MultiSigWallet {
             executed: false
         });
         transactionCount += 1;
-        Submission(transactionId);
+        emit Submission(transactionId);
     }
 
     /*
