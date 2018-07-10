@@ -96,7 +96,7 @@ contract MultiSigWallet {
         public
     {
         // ensure at least one owner, one signature and recovery mode time is greater than zero.
-        require(_required > 0 && _owners.length > 0 && _recoveryModeTriggerTime > 0 && _required == _owners.length);
+        require(_required > 0 && _owners.length > 0 && _recoveryModeTriggerTime > 0 && _owners.length >= _required);
         for (uint i=0; i<_owners.length; i++) {
             require(!isOwner[_owners[i]] && _owners[i] != 0);
             isOwner[_owners[i]] = true;
@@ -127,7 +127,6 @@ contract MultiSigWallet {
         ownerExists(msg.sender)
         returns (uint transactionId)
     {
-        require(destination != 0x0);
         transactionId = addTransaction(destination, value, data);
         confirmTransaction(transactionId);
     }
@@ -207,6 +206,7 @@ contract MultiSigWallet {
         notNull(destination)
         returns (uint transactionId)
     {
+        require(destination != 0x0);
         transactionId = transactionCount;
         transactions[transactionId] = Transaction({
             destination: destination,
@@ -231,21 +231,6 @@ contract MultiSigWallet {
     {
         for (uint i=0; i<owners.length; i++)
             if (confirmations[transactionId][owners[i]])
-                count += 1;
-    }
-
-    /// @dev Returns total number of transactions after filers are applied.
-    /// @param pending Include pending transactions.
-    /// @param executed Include executed transactions.
-    /// @return Total number of transactions after filters are applied.
-    function getTransactionCount(bool pending, bool executed)
-        public
-        constant
-        returns (uint count)
-    {
-        for (uint i=0; i<transactionCount; i++)
-            if (   pending && !transactions[i].executed
-                || executed && transactions[i].executed)
                 count += 1;
     }
 
@@ -280,29 +265,22 @@ contract MultiSigWallet {
             _confirmations[i] = confirmationsTemp[i];
     }
 
-    /// @dev Returns list of transaction IDs in defined range.
-    /// @param from Index start position of transaction array.
-    /// @param to Index end position of transaction array.
-    /// @param pending Include pending transactions.
-    /// @param executed Include executed transactions.
+    /// @dev Returns list of transaction IDs
     /// @return Returns array of transaction IDs.
-    function getTransactionIds(uint from, uint to, bool pending, bool executed)
+    function getTransactionIds(uint _number)
         public
         constant
         returns (uint[] _transactionIds)
     {
-        uint[] memory transactionIdsTemp = new uint[](transactionCount);
         uint count = 0;
         uint i;
+        // If requested number is greater than transactionCount,
+        // Instantiate array in memory with size = transactionCount.
+        if (_number > transactionCount)
+            _number = transactionCount
+        _transactionIds = new uint[](_number);
         for (i=0; i<transactionCount; i++)
-            if (   pending && !transactions[i].executed
-                || executed && transactions[i].executed)
-            {
-                transactionIdsTemp[count] = i;
+                _transactionIds[count] = i;
                 count += 1;
-            }
-        _transactionIds = new uint[](to.sub(from));
-        for (i=from; i<to; i++)
-            _transactionIds[i.sub(from)] = transactionIdsTemp[i];
     }
 }
