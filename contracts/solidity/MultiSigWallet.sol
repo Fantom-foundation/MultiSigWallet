@@ -92,7 +92,7 @@ contract MultiSigWallet {
     /// @param _owners List of owners.
     /// @param _required Number of required confirmations.
     /// @param _recoveryModeTriggerTime Time (in seconds) of inactivity before recovery mode is triggerable.
-    constructor (address[] _owners, uint _required, uint _recoveryModeTriggerTime)
+    constructor(address[] _owners, uint _required, uint _recoveryModeTriggerTime)
         public
     {
         // ensure at least one owner, one signature and recovery mode time is greater than zero.
@@ -277,7 +277,7 @@ contract MultiSigWallet {
         // If requested number is greater than transactionCount,
         // Instantiate array in memory with size = transactionCount.
         if (_number > transactionCount)
-            _number = transactionCount
+            _number = transactionCount;
         _transactionIds = new uint[](_number);
         for (i=0; i<transactionCount; i++)
                 _transactionIds[count] = i;
