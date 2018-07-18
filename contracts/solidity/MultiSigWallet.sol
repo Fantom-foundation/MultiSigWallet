@@ -229,9 +229,10 @@ contract MultiSigWallet {
         constant
         returns (uint count)
     {
-        for (uint i=0; i<owners.length; i++)
-            if (confirmations[transactionId][owners[i]])
-                count += 1;
+        for (uint i=0; i<owners.length; i++){
+          if (confirmations[transactionId][owners[i]])
+              count += 1;
+        }
     }
 
     /// @dev Returns list of owners.
