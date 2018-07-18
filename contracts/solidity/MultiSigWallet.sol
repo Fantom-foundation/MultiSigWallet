@@ -1,4 +1,4 @@
-pragma solidity 0.4.23;
+pragma solidity ^0.4.23;
 
 
 /// @title Multisignature wallet - Allows multiple parties to agree on transactions before execution.
@@ -279,8 +279,9 @@ contract MultiSigWallet {
         if (_number > transactionCount)
             _number = transactionCount;
         _transactionIds = new uint[](_number);
-        for (i=0; i<transactionCount; i++)
-                _transactionIds[count] = i;
-                count += 1;
+        for (i=0; i<transactionCount; i++){
+          _transactionIds[count] = i;
+          count += 1;
+        }
     }
 }
