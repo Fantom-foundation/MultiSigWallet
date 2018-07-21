@@ -184,7 +184,7 @@ contract MultiSigWallet {
         constant
         returns (bool)
     {
-        uint count = 0;
+        uint count;
         for (uint i=0; i<owners.length; i++) {
             if (confirmations[transactionId][owners[i]])
                 count += 1;
@@ -206,7 +206,6 @@ contract MultiSigWallet {
         notNull(destination)
         returns (uint transactionId)
     {
-        require(destination != 0x0);
         transactionId = transactionCount;
         transactions[transactionId] = Transaction({
             destination: destination,
@@ -254,7 +253,7 @@ contract MultiSigWallet {
         returns (address[] _confirmations)
     {
         address[] memory confirmationsTemp = new address[](owners.length);
-        uint count = 0;
+        uint count;
         uint i;
         for (i=0; i<owners.length; i++)
             if (confirmations[transactionId][owners[i]]) {
