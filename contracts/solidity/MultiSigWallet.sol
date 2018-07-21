@@ -107,14 +107,16 @@ contract MultiSigWallet {
         recoveryModeTriggerTime = _recoveryModeTriggerTime;
     }
 
-    /// @dev Changes the number of required confirmations to one. Only triggerable after recoveryModeTriggerTime of inactivity.
+    /// @dev Reduces the number of required confirmations by one. Only triggerable after recoveryModeTriggerTime of inactivity.
+    //  @dev Also resets the last transaction time to be the current block timestamp.
     function enterRecoveryMode()
         public
         ownerExists(msg.sender)
     {
         require(block.timestamp.sub(lastTransactionTime) >= recoveryModeTriggerTime);
-        required = 1;
-        emit RecoveryModeActivated();
+        required -= 1;
+        lastTransactionTime = block.timestamp;
+        emit recoveryModeTriggerTime();
     }
 
     /// @dev Allows an owner to submit and confirm a transaction.
