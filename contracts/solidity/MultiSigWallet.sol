@@ -265,24 +265,4 @@ contract MultiSigWallet {
         for (i=0; i<count; i++)
             _confirmations[i] = confirmationsTemp[i];
     }
-
-    /// @dev Returns list of transaction IDs
-    /// @return Returns array of transaction IDs.
-    function getTransactionIds(uint _number)
-        public
-        constant
-        returns (uint[] _transactionIds)
-    {
-        uint count = 0;
-        uint i;
-        // If requested number is greater than transactionCount,
-        // Instantiate array in memory with size = transactionCount.
-        if (_number > transactionCount)
-            _number = transactionCount;
-        _transactionIds = new uint[](_number);
-        for (i=0; i<transactionCount; i++){
-          _transactionIds[count] = i;
-          count += 1;
-        }
-    }
 }
