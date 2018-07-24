@@ -114,7 +114,7 @@ contract MultiSigWallet {
         ownerExists(msg.sender)
     {
         require(block.timestamp.sub(lastTransactionTime) >= recoveryModeTriggerTime && required > 1);
-        required.sub(1);
+        required = required.sub(1);
         lastTransactionTime = block.timestamp;
         emit RecoveryModeActivated();
     }
