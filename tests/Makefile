@@ -4,7 +4,7 @@ SOLC_FLAGS=--bin --abi
 OPT=--optimize --optimize-runs 10000
 BUILD_DIR=build
 
-SOURCE_DIR=../code/contracts/solidity/
+SOURCE_DIR=../contracts/solidity/
 SOLIDITY_CONTRACTS=MultiSigWallet.sol
 
 TEST_SOURCE_DIR=./contracts/
@@ -23,4 +23,3 @@ $(SOLIDITY_CONTRACTS):
 
 ${TEST_CONTRACTS}:
 	solc -o ${BUILD_DIR} --overwrite ${OPT} ${SOLC_FLAGS}  ${TEST_SOURCE_DIR}$@
-
